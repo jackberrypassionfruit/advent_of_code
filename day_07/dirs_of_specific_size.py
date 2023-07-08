@@ -27,7 +27,6 @@ for path, dir_sum in dir_sums.items():
 print(json.dumps(dir_sums_nested, indent=4, sort_keys=True))
 
 dir_sums_at_most_100_000 = {key: value for key, value in dir_sums_nested.items() if value <= 100_000}
-# print(sum(dir_sums_at_most_100_000.values()))
 
 # part 2
 total_avail_space = 70_000_000
@@ -37,8 +36,5 @@ print(needed_space)
 
 sums_at_least_needed_space = [tuple((key, value)) for key, value in dir_sums_nested.items() if value >= needed_space]
 sums_at_least_needed_space_sorted = sorted(sums_at_least_needed_space, key=lambda x: x[1])
-# print(json.dumps(sums_at_least_needed_space_sorted, indent=4, sort_keys=True))
-print(sums_at_least_needed_space_sorted)
-  
-  
+print(sums_at_least_needed_space_sorted[0])
   
