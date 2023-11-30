@@ -1,3 +1,5 @@
+import time
+
 class RopePhysicsShort():
   
   def _calculate_board_size(self, actions):
@@ -163,7 +165,7 @@ class RopePhysicsLong():
     self.move_head(dir)
     self.all_knots_follow()
     self.tails_travels.update([(self.knots[0][0], self.max_y + self.min_y-self.knots[0][1]-1)])
-    # self.draw_board()
+    self.draw_board()
     # print(self.knots)
     
     
@@ -172,6 +174,7 @@ class RopePhysicsLong():
       dir, dist = action
       for i in range(dist):
         self.make_step(dir)
+        time.sleep(.1)
         
   def get_tail_path_count(self):
     return len(self.tails_travels)

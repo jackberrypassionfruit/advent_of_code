@@ -20,15 +20,21 @@ actions = [(line.split(' ')[0], int(line.split(' ')[1])) for line in lines]
 
 
 rope_physics_long = RopePhysicsLong(actions)
-rope_physics_long.perform_actions()
-rope_physics_long.draw_board(show_path=True)
-print(rope_physics_long.get_tail_path_count())
-# print(rope_physics_long._calculate_board_size(actions))
+# rope_physics_long.perform_actions()
+# rope_physics_long.draw_board(show_path=True)
+# print(rope_physics_long.get_tail_path_count())
 
+dir_dict = {
+  'a': 'L',
+  's': 'D',
+  'd': 'R',
+  'w': 'U'
+}
 
-# test = range(5, 0, -1)
-# for i in test:
-#   print(i)
-
-
-### answer is SMALLER THAN 2561
+while True:
+  my_input = input('dir: ')
+  if my_input in list(dir_dict.keys()):
+    next_dir = dir_dict[my_input]
+    rope_physics_long.make_step(next_dir)
+  else:
+    print('try again doofus')
