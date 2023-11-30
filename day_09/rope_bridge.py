@@ -143,14 +143,18 @@ class RopePhysicsLong():
       x_diff = hi_knot[0] - lo_knot[0]
       y_diff = hi_knot[1] - lo_knot[1]
       
-      # Something odd here is causing one of the knots to not get carried along in a diagnonal
-      # for some reason, its new y becomes a fraction, adn then everyting is fucked up
       if   abs(x_diff) > 1:
-        lo_knot[0] += (x_diff / 2)
-        lo_knot[1] = hi_knot[1]
+        lo_knot[0] += int(x_diff / 2)
+        if abs(y_diff) > 1:
+          lo_knot[1] += int(y_diff / 2)
+        else:
+          lo_knot[1] = hi_knot[1]
       elif abs(y_diff) > 1:
-        lo_knot[1] += (y_diff / 2)
-        lo_knot[0] = hi_knot[0]
+        lo_knot[1] += int(y_diff / 2)
+        if abs(x_diff) > 1:
+          lo_knot[0] += int(x_diff / 2)
+        else:
+          lo_knot[0] = hi_knot[0]
         
       self.knots[knot_index] = lo_knot
       self.knots[knot_index + 1] = hi_knot
@@ -159,8 +163,8 @@ class RopePhysicsLong():
     self.move_head(dir)
     self.all_knots_follow()
     self.tails_travels.update([(self.knots[0][0], self.max_y + self.min_y-self.knots[0][1]-1)])
-    self.draw_board()
-    print(self.knots)
+    # self.draw_board()
+    # print(self.knots)
     
     
   def perform_actions(self):
