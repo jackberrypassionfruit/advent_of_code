@@ -1,0 +1,20 @@
+instead of python lists for each monkey...
+...one list for all the idems
+- items will be processed as they come, in order
+- getting to the end of the list will mean I've finished a round
+- benefit: less list and object overhead, just in-place mding values
+
+monkey #0: 71962
+monkey #1: 71948
+monkey #2: 71932
+monkey #3: 58
+monkey #4: 83
+monkey #5: 71974
+monkey #6: 55
+monkey #7: 71988
+
+5181264312 is too low
+
+next try:
+4094220130
+28244037010
