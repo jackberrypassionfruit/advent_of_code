@@ -30,20 +30,8 @@ class HillClimbing():
     for row_index, row in enumerate(result):
       result[row_index] = row.replace('S', "\N{rainbow}").replace('E', '\N{chequered flag}')
     return '\n'.join(result)
-
-  # def print_frontier(self):
-  #   print('Current frontier:')
-  #   for node in self.frontier.frontier: # the QueueFrontier class has its own frontiere attribute....sigh
-  #     print(node)
-      
-  # def print_traveled_path(self):
-  #   print('Traveled path')
-  #   # for coord in self.traveled_path:
-  #   #   print(str(coord))
-  #   print(self.traveled_path)
       
   def get_next_move_options(self, state, x, y):
-    
     next_steps = []
     
     # if (x, y) == self.start:
@@ -52,12 +40,6 @@ class HillClimbing():
     #   this_ord = ord(self.heightmap[y][x])
     
     this_ord = 100 if (x, y) == self.start else ord(self.heightmap[y][x])
-    
-    # self.heightmap[y][x-1] = self.heightmap[y][x-1]
-    # self.heightmap[y][x+1] = self.heightmap[y][x+1]
-    # self.heightmap[y+1][x] = self.heightmap[y+1][x]
-    # self.heightmap[y-1][x] = self.heightmap[y-1][x]
-    
     
     if x > 0               and (state == 'z' or self.heightmap[y][x-1] != 'E') and ord(self.heightmap[y][x-1]) <= this_ord + 1:
       next_steps.append((self.heightmap[y][x-1], x-1, y))
@@ -75,7 +57,14 @@ class HillClimbing():
     
     return real_next_steps
     
-    
+  def get_all_char_locations(self, char):
+    char_locs = []
+    for row_index, row in enumerate(self.heightmap):
+      for col_index, val in enumerate(row):
+        if val == char:
+          char_locs.append((col_index, row_index))
+          
+    return char_locs
     
   def compile_path(self, node):
     num_steps = 0
@@ -89,33 +78,40 @@ class HillClimbing():
       })
       node = node.parent
       
-    for step in reversed(path):
-      print(step)
-    for row_index, row in enumerate(self.heightmap):
-      for col_index, val in enumerate(row):
-        for step in path:
-          if (col_index, row_index) == step['coord']:
-            val = colored(step['action'], 'green')
-            break
-        print(val, end='')
-      print()
+    # for step in reversed(path):
+    #   print(step)
+    # for row_index, row in enumerate(self.heightmap):
+    #   for col_index, val in enumerate(row):
+    #     for step in path:
+    #       if (col_index, row_index) == step['coord']:
+    #         val = colored(step['action'], 'green')
+    #         break
+    #     print(val, end='')
+    #   print()
 
     
     return num_steps
   
-  def find_shortest_path(self):
-    self.frontier.add(Node(state='S', coord=self.start, parent=None, action=None))
-    
+  def find_shortest_path(self, start_char=None, start_loc=None):
+    if start_char:
+      self.frontier.add(Node(state=start_char, coord=start_loc, parent=None, action=None))
+    else: 
+      self.frontier.add(Node(state='S', coord=self.start, parent=None, action=None))
     while self.frontier:
       # self.print_frontier()
-      current_node = self.frontier.remove()            
+      try:
+        current_node = self.frontier.remove()  
+      except:
+        return 1000    
       self.traveled_path.append(current_node.coord)
       # print(f'current -> state: {current_node.state}, coord: {current_node.coord}')
       # print('next moves: ', self.get_next_move_options(current_node.state, *current_node.coord))
       # self.print_traveled_path()
       # print('Traveled path: ', self.traveled_path)
       if current_node.state == 'E':
-        return print(self.compile_path(current_node))
+        self.frontier = QueueFrontier()
+        self.traveled_path = []
+        return self.compile_path(current_node)
       else:
         # for state, x, y in self.get_next_move_options(*current_node.coord):
         for state, x, y in self.get_next_move_options(current_node.state, *current_node.coord):
@@ -142,3 +138,12 @@ class HillClimbing():
         # print('\n\n\n\n')
         # time.sleep(.5)
             
+  def find_nearest_low_to_summit(self, char):
+    char_locs = self.get_all_char_locations(char)
+    min_dist = self.find_shortest_path(char, char_locs.pop())
+    locs_counted = 0
+    for loc in char_locs:
+      min_dist = min(min_dist, self.find_shortest_path(char, loc))
+      locs_counted += 1
+      print(locs_counted)
+    return min_dist

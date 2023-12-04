@@ -2,7 +2,8 @@ from hill_climbing import HillClimbing
 
 hill_climbing = HillClimbing()
 
-# print(hill_climbing, '\n\n')
+# print(hill_climbing.get_all_char_locations('a'))
 
-# print(hill_climbing.get_next_move_options(1, 2))
-hill_climbing.find_shortest_path()
+# hill_climbing.find_shortest_path()
+
+print(hill_climbing.find_nearest_low_to_summit('a'))
