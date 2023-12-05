@@ -23,7 +23,7 @@ class Distress():
     cont, cont_1, cont_2 = True, True, True
     while cont and (cont_1 or cont_2):
       if type(packet_0) == list and cont_1:
-        print('packet_0: ', packet_0)
+        # print('packet_0: ', packet_0)
         packet_0 = packet_0[0]
         if packet_0 == []:
           cont = False
@@ -31,7 +31,7 @@ class Distress():
         cont_1 = False
         
       if type(packet_1) == list and cont_2:
-        print('packet_1: ', packet_1)
+        # print('packet_1: ', packet_1)
         packet_1 = packet_1[0]
         if packet_1 == []:
           cont = False
@@ -74,4 +74,5 @@ class Distress():
         
   
   def order_check(self, pair):
-    return self.recursive_order_check(reversed(pair[0]), reversed(pair[1]))
+    # return self.recursive_order_check(reversed(pair[0]), reversed(pair[1])) # this might not be necessary, since water level work well and I don't have to pop()
+    return self.recursive_order_check(pair[0], pair[1])
