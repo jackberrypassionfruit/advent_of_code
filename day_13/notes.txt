@@ -1,0 +1,8 @@
+steps:
+1. get first item of each packet
+2. reduce/list() until both same, lowest degree
+3a. if a < b:
+- IN Order
+3b. if a > b:
+-  NOT in Order
+3c. try next letter in pattern and start over
