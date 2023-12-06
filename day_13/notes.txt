@@ -6,3 +6,9 @@ steps:
 3b. if a > b:
 -  NOT in Order
 3c. try next letter in pattern and start over
+----------------------------------------------
+1, 2, 4, and 6 is correct
+
+
+
+6329 too high
