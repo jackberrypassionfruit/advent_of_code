@@ -53,24 +53,27 @@ class SandyCave():
     return [(x, y) for x, y in [(x, y+1), (x-1, y+1), (x+1, y+1)] if  
               (x, y) not in self.wall_paths and \
               (x, y) not in self.resting_sand and \
-              (x, y) != self.current_coords] # and \
-              # y < self.y_max + 2]
+              (x, y) != self.current_coords and \
+              y < self.y_max + 2]
   def drop_sand(self):
     self.current_coords = (500, 0)
     can_move = True
     while can_move:
       possible_moves = self.next_possible_moves(*self.current_coords)
-      if   not possible_moves:
+      if not possible_moves and self.current_coords == (500, 0):
+        self.current_coords = None
+        return False 
+      elif not possible_moves:
         self.resting_sand.add(self.current_coords)
         can_move = False
-      elif possible_moves[0][0] < self.x_min or possible_moves[0][0] > self.x_max or possible_moves[0][1] > self.y_max:
-        self.current_coords = None
-        return False
+      # elif possible_moves[0][0] < self.x_min or possible_moves[0][0] > self.x_max or possible_moves[0][1] > self.y_max:
+        # self.current_coords = None
+        # return False
       else:
         self.current_coords = possible_moves[0]
       # print(self)
     print(f'Current count: {len(self.resting_sand)}')
-      # time.sleep(.1)
+    # time.sleep(.1)
     return True
       
   def cave_collapse(self):
