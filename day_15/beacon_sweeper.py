@@ -30,7 +30,7 @@ class BeaconExclusionNaive():
       
     self.sensor_coords = [sensor.coords for sensor in self.sensors]
   
-  def model_tunnel(self):
+  def model_tunnel_frame(self):
     self.tunnel = []
     for j in range(self.min_y, self.max_y + 1):
       line = []
@@ -42,6 +42,16 @@ class BeaconExclusionNaive():
         else:
           line.append('.')
       self.tunnel.append(line)
+
+  # I want to split up the above function into 2, but this bottom function is not doing what I want it to do
+  # def model_tunnel(self):
+  #   for j in range(self.min_y, self.max_y + 1):
+  #     for i in range(self.min_x, self.max_x + 1):
+        
+  #       if   (i, j) in self.beacons:
+  #         self.tunnel[j][i] = 'B'
+  #       elif (i, j) in self.sensor_coords:
+  #         self.tunnel[j][i] = 'S'
       
     
   def __repr__(self):
@@ -64,7 +74,7 @@ class BeaconExclusionNaive():
   def exclude_zones(self):    
     for sensor in list(self.sensors)[:]:
       coords, radius = sensor.coords, sensor.exclusion_radius
-      print('excluding coords for sensor @', coords)
+      # print('excluding coords for sensor @', coords)
       x_coord, y_coord = [int(coord) for coord in coords]  
       for delta_y in range(-1*radius, radius + 1):
         for delta_x in range(-1*(radius - abs(delta_y)) , (radius - abs(delta_y)+1)):
@@ -81,8 +91,9 @@ class BeaconExclusionNaive():
 if __name__ == '__main__':
   beacon_sweeper = BeaconExclusionNaive()
   beacon_sweeper.calculate_tunnel_bounds()
-  beacon_sweeper.model_tunnel()
+  beacon_sweeper.model_tunnel_frame()
   beacon_sweeper.exclude_zones()
+  # beacon_sweeper.model_tunnel()
   print(beacon_sweeper)
   print(beacon_sweeper.get_num_exclusions_by_row(10))
   
