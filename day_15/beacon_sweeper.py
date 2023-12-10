@@ -4,6 +4,9 @@ class Sensor():
   def __init__(self, coords, exclusion_radius):
     self.coords = coords
     self.exclusion_radius = exclusion_radius
+  def __repr__(self):
+    # return str(f'coords: {self.coords}, radius: {self.exclusion_radius }')
+    return str(self.coords[1])
     
 class BeaconExclusionNaive():
   def __init__(self):
@@ -43,7 +46,6 @@ class BeaconExclusionNaive():
   def model_tunnel(self):
     for j in range(self.max_y - self.min_y + 1):
       for i in range(self.max_x - self.min_x + 1):
-        print(i, j)
         # the reason the i's and j's are different is because the beacon's/sensor's coords were stored based on the original layout...
         # but the full layout based on min/max x/y doesn't account for this
         if   (i, j) in self.beacons:
@@ -58,6 +60,10 @@ class BeaconExclusionNaive():
       render_tunnel += ''.join(line) + '\n'
     return render_tunnel
     # return str(self.beacons)
+    # render_tunnel = '['
+    # for sensor in self.sensors:
+    #   render_tunnel += ', ' + str(sensor)
+    # return render_tunnel + ']'
     
   def calculate_tunnel_bounds(self):
     for sensor in self.sensors:
@@ -67,20 +73,35 @@ class BeaconExclusionNaive():
       self.min_x = min(self.min_x, x_coord - radius)
       self.max_y = max(self.max_y, y_coord + radius)
       self.min_y = min(self.min_y, y_coord - radius)
-  
+    print('min_y: ', self.min_y, 'min_x: ', self.min_x, 'max_x: ', self.max_x, 'max_y: ', self.max_y)
 
   def exclude_zones(self):    
     for sensor in list(self.sensors)[:]:
       coords, radius = sensor.coords, sensor.exclusion_radius
-      # print('excluding coords for sensor @', coords)
+      print('excluding coords for sensor @', coords)
       x_coord, y_coord = [int(coord) for coord in coords]  
       for delta_y in range(-1*radius, radius + 1):
         for delta_x in range(-1*(radius - abs(delta_y)) , (radius - abs(delta_y)+1)):
           current_x = x_coord + delta_x
           current_y = y_coord + delta_y
+          print(f'current_x: ', current_x, 'current_x: ', current_x)
           current_coords_value = self.tunnel[current_y - self.min_y][current_x - self.min_x]
           if current_coords_value == '.':
             self.tunnel[current_y - self.min_y][current_x - self.min_x] = '#'
+            
+  # def exclude_borders(self):    
+  #   for sensor_index, sensor in enumerate(list(self.sensors)[:]):
+  #     coords, radius = sensor.coords, sensor.exclusion_radius
+  #     # print('excluding coords for sensor @', coords)
+  #     x_coord, y_coord = [int(coord) for coord in coords]  
+  #     for delta_y in range(-1*radius, radius + 1):
+        
+  #       # for delta_x in range(-1*(radius - abs(delta_y)) , (radius - abs(delta_y)+1)):
+  #       #   current_x = x_coord + delta_x
+  #       #   current_y = y_coord + delta_y
+  #       #   current_coords_value = self.tunnel[current_y - self.min_y][current_x - self.min_x]
+  #       #   if current_coords_value == '.':
+  #       #     self.tunnel[current_y - self.min_y][current_x - self.min_x] = '#'
             
   def get_num_exclusions_by_row(self, row_index):
     return len([val for val in self.tunnel[row_index - self.min_y] if val in [ 'S', '#']])
@@ -89,9 +110,10 @@ class BeaconExclusionNaive():
 if __name__ == '__main__':
   beacon_sweeper = BeaconExclusionNaive()
   beacon_sweeper.calculate_tunnel_bounds()
+  print('got this far')
   beacon_sweeper.model_tunnel_frame()
   beacon_sweeper.exclude_zones()
   beacon_sweeper.model_tunnel()
   print(beacon_sweeper)
-  print(beacon_sweeper.get_num_exclusions_by_row(10))
+  print(beacon_sweeper.get_num_exclusions_by_row(2000000))
   
