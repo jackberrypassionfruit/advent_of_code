@@ -151,7 +151,7 @@ class FallingRocks():
     
     
   def release_the_blocks(self):
-    for i in range(1000000000000):
+    for i in range(2022):
       self.block_index = i % len(self.blocks)
       
       self.release_block()
