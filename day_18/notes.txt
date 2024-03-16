@@ -1,0 +1,15 @@
+Brainstorming pt2:
+
+Finding voids:
+  - Not sure how to do this. Because their could be overhanging borders on the object's surface, I can't look out in the straight line to find edges
+  - For this reason, I am searching from block to block
+
+Finding Surface Area:
+- traverse from one cube to all others
+- Travel along all neighboring cubes for which there exists some empty space on its border
+  - if neighbor cell does not border empty space, then it is landlocked and not actually on Surface
+- Once I have all the blocks on the surface, I can get their surface areas
+  - Avoid the edge case where the cornering blocks are diagonal neighbors, and they trap (an) empty space(s) where air can't reach
+  - I will process this later when I am processing surface area for the surface blocks 
+
+  
