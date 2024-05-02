@@ -1,0 +1,19 @@
+
+
+Each "bit" in the list is a NODE
+
+Each NODE has attributes:
+  - Data/Value
+  - Left  Neighbor Address
+  - Right Neighbor Address
+  - ___Address/Index___
+
+2 potential approaches
+
+1. Indices
+  Pro: Faster finding the next place for the bit to move to
+  Con: Have to move every single bit along the path over a spot
+
+2. Neighbors
+  Pro:  Faster moves
+  Cons: Takes longer to find the next place for the bit to move to
