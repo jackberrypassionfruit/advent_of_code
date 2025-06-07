@@ -1,6 +1,6 @@
 
 
-with open('input.txt', 'r') as infile:
+with open('test_input.txt', 'r') as infile:
   bits = infile.read().split('\n')
   
 bits = [int(bit) for bit in bits]
